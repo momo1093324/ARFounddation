@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.XR.ARFoundation; //引用foundation api
+using UnityEngine.XR.ARSubsystems;//引用Subsystems api
 using System.Collections.Generic; //引用系統.集合.一般.包含清單 List
 
 
@@ -16,7 +17,7 @@ public class ARManager : MonoBehaviour
     //滑鼠座標
     private Vector2 pointMouse;
     //碰撞資訊
-    private List<ARRaycastHit> hit;
+    private List<ARRaycastHit> hits;
 
     //點擊
     private void Tap()
@@ -27,8 +28,15 @@ public class ARManager : MonoBehaviour
             pointMouse = Input.mousePosition;//滑鼠座標=玩家滑鼠座標
             print(pointMouse);
         }
-   //判斷射線是否打到物件
-   //生成物件
+        //判斷射線是否打到物件
+        if (arManager.Raycast(pointMouse,hits,TrackableType.PlaneWithinPolygon))
+        {
+            //生成物件
+            //hits[0].pose.position點擊到地面的第一個位置
+            //Quaternion.identity零角度
+          Instantiate(obj, hits[0].pose.position, Quaternion.identity);
+        }
+   
     }
     private void Update()
     {
